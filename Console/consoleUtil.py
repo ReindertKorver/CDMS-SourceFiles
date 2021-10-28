@@ -1,5 +1,6 @@
 import glob, os, sys
 from typing import Callable
+
 class ConsoleUtility:
     @staticmethod
     def showFuncDict(dict):
@@ -84,14 +85,17 @@ class ConsoleUtility:
             return numbers
             
     @staticmethod
-    def validate_input(validator:Callable[[str], str] ,text='Type something: '):
+    def validate_input(validator:Callable[[str], str] ,text='Type something: ', count=1):
+        if count>=11:
+            raise Exception("Please be descrete in your input, your action has been canceled...")
         val =input(text)
         valResult = validator(val)
         if valResult==None:
             return val
         else:
             print("❌ "+valResult)
-            return ConsoleUtility.validate_input(validator,text)
+            count+=1
+            return ConsoleUtility.validate_input(validator,text,count)
 
     @staticmethod
     def select_option(options, text='Select option: ', select_text='Option: ', error='Invalid option!') :

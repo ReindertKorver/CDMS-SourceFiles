@@ -6,13 +6,15 @@ class Encrypter:
         self.salt=salt
     def encrypt(self, content):
         hashedContent=""
-        for char in content:
-            hashedContent+=chr(ord(char)-len(self.salt))
+        if hashedContent!=None:
+            for char in content:
+                hashedContent+=chr(ord(char)-len(self.salt))
         return hashedContent
     def decrypt(self, hashedContent):
         content=""
-        for char in hashedContent:
-            content+=chr(ord(char)+len(self.salt))
+        if hashedContent!=None:
+            for char in hashedContent:
+                content+=chr(ord(char)+len(self.salt))
         return content
 class EncryptionProvider:
     @staticmethod

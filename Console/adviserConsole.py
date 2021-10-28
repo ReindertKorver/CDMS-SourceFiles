@@ -44,7 +44,7 @@ class AdviserConsole:
                 theUser.passwordHash=EncryptionProvider.instance.encrypt(password)
                 theUser.role=role
                 nonres=DatabaseWrapperProvider.instance.update(theUser)
-                Logger.log(self.user.username,
+                Logger.log(self.user.username.value,
                         self.user.id,"A users password was reset",
                         f"User {username}'s password was reset ",0)
                 if nonres:
@@ -52,6 +52,7 @@ class AdviserConsole:
                 else:
                     print("User not updated")
         except Exception as ex:
+            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
     
     def addClient(self):
@@ -67,10 +68,11 @@ class AdviserConsole:
             )
         
             DatabaseWrapperProvider.instance.insert(newClient.__dict__, "client")
-            Logger.log(self.user.username,
+            Logger.log(self.user.username.value,
                 self.user.id,"Created a client",
                 f"Client {email} was created ",0)
         except Exception as ex:
+            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
         
     def editClient(self):
@@ -108,7 +110,7 @@ class AdviserConsole:
             theClient.address=EncryptionProvider.instance.encrypt(address)
             theClient.mobilePhoneNumber=EncryptionProvider.instance.encrypt(mobilePhoneNumber)
             nonres=DatabaseWrapperProvider.instance.update(theClient)
-            Logger.log(self.user.username,
+            Logger.log(self.user.username.value,
                     self.user.id,"A client's identity was changed",
                     f"Client {fullname}'s password/fullname/username/role was changed ",0)
             if nonres:
@@ -116,6 +118,7 @@ class AdviserConsole:
             else:
                 print("Client not added")
         except Exception as ex:
+            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     def searchForClient(self):
@@ -134,6 +137,7 @@ class AdviserConsole:
             
             ConsoleUtility.enter_to_continue()
         except Exception as ex:
+            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     def exitConsole(self):
@@ -150,8 +154,15 @@ class AdviserConsole:
         self.user=user
         print("Welcome Advisor {}.".format(self.user.username))
         while True:
-            ConsoleUtility.showFuncDict(self.functionalitiesOfUser)
-            self.contextSwitch(input("What task do you want to do {} ?".format(self.user.username)))
+            try:
+                ConsoleUtility.showFuncDict(self.functionalitiesOfUser)
+                self.contextSwitch(input("What task do you want to do {} ?".format(self.user.username)))
+            except KeyboardInterrupt:
+                print("Canceled")
+            except Exception as e:
+                Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(e),0)
+                print("Something went wrong: " + str(e))
+            
 
     def contextSwitch(self, userInput:str):
         if userInput.upper() in self.functionalitiesOfUser:
