@@ -49,7 +49,7 @@ class SystemAdminConsole:
                 theUser.passwordHash=EncryptionProvider.instance.encrypt(password)
                 theUser.role=role
                 nonres=DatabaseWrapperProvider.instance.update(theUser)
-                Logger.log(self.user.username.value,
+                Logger.log(str(self.user.username),
                         self.user.id,"A users password was reset",
                         f"User {username}'s password was reset ",0)
                 if nonres:
@@ -57,7 +57,7 @@ class SystemAdminConsole:
                 else:
                     print("User not updated")
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     def checkUsersAndRoles(self):
@@ -68,7 +68,7 @@ class SystemAdminConsole:
                 print(f'  {str(i+1)}. {option}')
             ConsoleUtility.enter_to_continue()
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
     
     def addUser(self):
@@ -86,11 +86,11 @@ class SystemAdminConsole:
             created=datetime.now().strftime("%d/%m/%Y %H:%M:%S")
             newUser=User(EncryptionProvider.instance.encrypt(fullname),EncryptionProvider.instance.encrypt(username),EncryptionProvider.instance.encrypt(password),emailaddress=EncryptionProvider.instance.encrypt(emailadress))
             DatabaseWrapperProvider.instance.insertUserNew(newUser,role,createdBy,created)
-            Logger.log(self.user.username.value,
+            Logger.log(str(self.user.username),
                 self.user.id,"Created a user",
                 f"User {username} was created ",0)
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong:",ex)
     
     def editUser(self):
@@ -132,7 +132,7 @@ class SystemAdminConsole:
             theUser.passwordHash=EncryptionProvider.instance.encrypt(password)
             theUser.role=role
             nonres=DatabaseWrapperProvider.instance.update(theUser)
-            Logger.log(self.user.username.value,
+            Logger.log(str(self.user.username),
                     self.user.id,"A users identity changed",
                     f"User {username}'s password/fullname/username/role was changed ",0)
             if nonres:
@@ -140,7 +140,7 @@ class SystemAdminConsole:
             else:
                 print("User not updated")
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     def deleteUser(self):
@@ -150,7 +150,7 @@ class SystemAdminConsole:
             test=[EncryptionProvider.instance.decrypt(row[1])+" - "+EncryptionProvider.instance.decrypt(row[2]) for row in resList]
             (i,option)=ConsoleUtility.select_option(test,"Select a user: ")
             boolres=DatabaseWrapperProvider.instance.delete(User(id=resList[option][0]))
-            Logger.log(self.user.username.value,
+            Logger.log(str(self.user.username),
                     self.user.id,"A user was deleted",
                     f"User with id: {resList[option][0]} and username: {resList[option][2]} was deleted",0)
             if boolres:
@@ -158,7 +158,7 @@ class SystemAdminConsole:
             else:
                 print("User not deleted")
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     def createTempPassword(self):
@@ -188,7 +188,7 @@ class SystemAdminConsole:
             theUser.passwordHash=EncryptionProvider.instance.encrypt(password)
             theUser.role=role
             nonres=DatabaseWrapperProvider.instance.update(theUser)
-            Logger.log(self.user.username.value,
+            Logger.log(str(self.user.username),
                     self.user.id,"A users password was reset",
                     f"User {username}'s password was reset ",0)
             if nonres:
@@ -196,7 +196,7 @@ class SystemAdminConsole:
             else:
                 print("User not updated")
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
     
     def createBackup(self):
@@ -212,7 +212,7 @@ class SystemAdminConsole:
                 print(f'  {str(i+1)}. {option}')
             ConsoleUtility.enter_to_continue()
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
     
     def addClient(self):
@@ -227,11 +227,11 @@ class SystemAdminConsole:
                 self.user.id,
             )
             DatabaseWrapperProvider.instance.insert(newClient.__dict__, "client")
-            Logger.log(self.user.username.value,
+            Logger.log(str(self.user.username),
                 self.user.id,"Created a client",
                 f"Client {email} was created ",0)
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
     
 
@@ -270,7 +270,7 @@ class SystemAdminConsole:
             theClient.address=EncryptionProvider.instance.encrypt(address)
             theClient.mobilePhoneNumber=EncryptionProvider.instance.encrypt(mobilePhoneNumber)
             nonres=DatabaseWrapperProvider.instance.update(theClient)
-            Logger.log(self.user.username.value,
+            Logger.log(str(self.user.username),
                     self.user.id,"A client's identity was changed",
                     f"Client {fullname}'s password/fullname/username/role was changed ",0)
             if nonres:
@@ -278,7 +278,7 @@ class SystemAdminConsole:
             else:
                 print("Client not updated")
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     def deleteClient(self):
@@ -287,7 +287,7 @@ class SystemAdminConsole:
             test=[EncryptionProvider.instance.decrypt(row[1])+" - "+EncryptionProvider.instance.decrypt(row[2]) for row in resList]
             (i,option)=ConsoleUtility.select_option(test,"Select a client: ")
             boolres=DatabaseWrapperProvider.instance.delete(User(id=resList[option][0]))
-            Logger.log(self.user.username.value,
+            Logger.log(str(self.user.username),
                     self.user.id,"A client was deleted",
                     f"Client with id: {resList[option][0]} and emailaddress: {resList[option][2]} was deleted",0)
             if boolres:
@@ -295,7 +295,7 @@ class SystemAdminConsole:
             else:
                 print("Client not deleted")
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     def searchForClient(self):
@@ -314,14 +314,14 @@ class SystemAdminConsole:
             
             ConsoleUtility.enter_to_continue()
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     def exitConsole(self):
         try:
             exit()
         except Exception as ex:
-            Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(ex),0)
+            Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(ex),0)
             print("❌ Something went wrong: ",ex)
 
     functionalitiesOfUser = {
@@ -350,7 +350,7 @@ class SystemAdminConsole:
             except KeyboardInterrupt:
                 print("Canceled")
             except Exception as e:
-                Logger.log(self.user.username.value,self.user.id,"Something went wrong",str(e),0)
+                Logger.log(str(self.user.username),self.user.id,"Something went wrong",str(e),0)
                 print("Something went wrong: " + str(e))
 
     def contextSwitch(self, userInput:str):
